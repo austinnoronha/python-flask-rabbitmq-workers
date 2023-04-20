@@ -1,6 +1,12 @@
 import pika
-# Import os module
-import os
+import os, json, datetime
+from mongoengine import *
+
+connect(
+    db='test',
+    host='mongodb',
+    port=27017
+)
 
 # Iterate loop to read and print all environment variables
 print("The keys and values of all environment variables:")
@@ -8,6 +14,19 @@ for key in os.environ:
     print(key, '=>', os.environ[key])
     
 print(' Connecting to server ...')
+
+class User(Document):
+    name = StringField(max_length=300, required=True, primary_key=True)
+    status = IntField(default=1)
+    date_created = DateTimeField(default=datetime.datetime.utcnow)
+    date_modified = DateTimeField(default=datetime.datetime.utcnow)
+    meta = {
+        'indexes': [
+            '$name',  # text index
+        ]
+    }
+    def to_json(self):
+        return {"name": self.name}
 
 connection = None   
 try:
@@ -30,8 +49,12 @@ try:
 
 
     def callback(ch, method, properties, body):
-        print(" Received %s" % body.decode())
-        print(" Done")
+        username=body.decode()
+        user_insert = User(name=username)
+        user_insert.save()
+
+        print(" Received username as %s" % username)
+        print(" Done! ")
 
         ch.basic_ack(delivery_tag=method.delivery_tag)
 

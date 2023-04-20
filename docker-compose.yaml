@@ -4,7 +4,7 @@ version: '3'
 services:
   web:
     container_name: 'project-demo-web'
-    restart: always
+    restart: on-failure:5
     build: 'app'
     environment:
       - RABBITMQ_HOST=rabbitmq
@@ -13,12 +13,14 @@ services:
       - RABBITMQ_PORT=5672
     ports:
       - '5000:5000'
+    volumes:
+        - './app/:/code/'
     depends_on:
        - rabbitmq
 
   worker:
     #container_name: 'project-demo-worker'
-    #restart: failure:5
+    restart: on-failure:5
     build: 'worker'
     environment:
       - PYTHONUNBUFFERED=1
@@ -26,8 +28,11 @@ services:
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
       - RABBITMQ_PORT=5672
+    volumes:
+        - './worker/:/code/'
     depends_on:
        - rabbitmq
+       - mongodb
     
     
   rabbitmq:
@@ -44,3 +49,14 @@ services:
         retries: 5
     volumes:
         - './rabbitmq/data/:/var/lib/rabbitmq/mnesia/'
+
+  mongodb:
+    image: mongo:6.0
+    container_name: 'project-demo-mongodb'
+    restart: on-failure:5
+    hostname: mongodb-host
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/mongo/db:/data/db
+      - ./mongodb/mongo/logs:/var/log/mongodb

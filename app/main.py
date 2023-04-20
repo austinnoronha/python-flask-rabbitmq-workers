@@ -2,8 +2,10 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask_cors import CORS
-from flask import redirect, url_for
-import pika, os
+from flask import redirect, url_for, jsonify
+from bson import ObjectId
+import pika, os, json, datetime
+from pymongo import MongoClient
 
 app = Flask(__name__)
 CORS(app)
@@ -11,10 +13,17 @@ resources = {r"/*": {"origins": "*"}}
 app.config["CORS_HEADERS"] = "Content-Type"
 app.config['JSON_SORT_KEYS'] = False
 
-# Iterate loop to read and print all environment variables
-print("The keys and values of all environment variables:")
-for key in os.environ:
-    print(key, '=>', os.environ[key])
+try:
+    client = MongoClient('mongodb')
+    db = client['test']
+    print("MongoClient Connected to DB: ", db.name)
+except Exception as e:
+    print("MongoClient Exception :", e)
+
+# # Iterate loop to read and print all environment variables
+# print("The keys and values of all environment variables:")
+# for key in os.environ:
+#     print(key, '=>', os.environ[key])
 
 @app.route('/')
 @app.route('/index')
@@ -24,7 +33,15 @@ def index():
 
 @app.route('/dashboard/<name>')
 def dashboard(name):
-    return render_template('dashboard.html', username=name)
+    list_users = []
+    col = db["user"]
+    for user in col.find({}):
+        list_users.append({
+            "id": str(user['_id']),
+            "name": str(user['name']),
+            "created": user['date_created'].strftime("%Y-%m-%d")
+            })
+    return render_template('dashboard.html', username=name, list_users=list_users)
 
 @app.route('/login',methods = ['POST', 'GET'])
 def login():
