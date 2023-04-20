@@ -1,0 +1,46 @@
+# docker-compose.yaml
+version: '3'
+
+services:
+  web:
+    container_name: 'project-demo-web'
+    restart: always
+    build: 'app'
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PORT=5672
+    ports:
+      - '5000:5000'
+    depends_on:
+       - rabbitmq
+
+  worker:
+    #container_name: 'project-demo-worker'
+    #restart: failure:5
+    build: 'worker'
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PORT=5672
+    depends_on:
+       - rabbitmq
+    
+    
+  rabbitmq:
+    image: rabbitmq:3.8.14-management
+    container_name: 'project-demo-rabbitmq'
+    restart: always
+    ports:
+        - 5672:5672
+        - 15672:15672
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    volumes:
+        - './rabbitmq/data/:/var/lib/rabbitmq/mnesia/'
