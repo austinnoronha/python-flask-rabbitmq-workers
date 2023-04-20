@@ -9,6 +9,29 @@
                 <div class="col-md-lg mt-5"> 
                     <h1>Welcome! <u>{{ username }}</u></h1>
                 </div>
+                
+                <div class="col-md-lg mt-5"> 
+                    <h2>List of all user(s)</h2>
+                    <table class="table table-bordered table-dark">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for result in list_users %}
+                        <tr scope="row">
+                            <td>{{result.id}}</td>
+                            <td>{{result.name}}</td>
+                            <td>{{result.created}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                   </table>
+                </div>
+
             </div>
         </div>
         

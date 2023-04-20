@@ -4,6 +4,7 @@ WORKDIR /code
 RUN python -m pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+RUn pip install pymongo
 COPY . /code
 EXPOSE 5000
 COPY . .

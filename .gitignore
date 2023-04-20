@@ -3,3 +3,5 @@
 venv
 .DStore
 rabbitmq/data/rabbit*
+mongodb/mongo/db/**
+mongodb/mongo/logs/**
