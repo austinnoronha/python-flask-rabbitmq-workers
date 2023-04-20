@@ -2,4 +2,4 @@
 .venv
 venv
 .DStore
-rabbitmq/data/*
+rabbitmq/data/rabbit*
