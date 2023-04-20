@@ -66,8 +66,18 @@ docker-compose stop rabbitmq
 
 ## Demo
 
-Insert gif or link to demo
+Screenshots
 
+## Docker Containers Running
+![Docker Containers Running](https://github.com/austinnoronha/UI-References-and-Screenshots/blob/421ac5b7dbeead5900a675dd8f1945176e5dac4b/common-images/demo%20-%20bg%20-%20docker%201.jpg)
+
+
+## Test Run using Postman
+![Docker Containers Running](https://github.com/austinnoronha/UI-References-and-Screenshots/blob/421ac5b7dbeead5900a675dd8f1945176e5dac4b/common-images/demo%20-%20bg%20-%20postman%201.jpg)
+
+
+## RabbitMQ Queue
+![RabbitMQ Queue](https://github.com/austinnoronha/UI-References-and-Screenshots/blob/421ac5b7dbeead5900a675dd8f1945176e5dac4b/common-images/demo%20-%20bg%20-%20rabbitmq%201%20-%205%20consumers.jpg)
 
 ## Environment Variables
 
