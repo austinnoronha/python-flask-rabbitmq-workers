@@ -6,6 +6,7 @@ from flask import redirect, url_for, jsonify
 from bson import ObjectId
 import pika, os, json, datetime
 from pymongo import MongoClient
+from lorem_text import lorem
 
 app = Flask(__name__)
 CORS(app)
@@ -28,8 +29,9 @@ except Exception as e:
 @app.route('/')
 @app.route('/index')
 def index():
-    name = 'Rosalia'
-    return render_template('index.html', title='Welcome', username=name)
+    words = 2
+    paragraph_length = 2
+    return render_template('index.html', title='Welcome', username=lorem.words(words), welcome_text=lorem.paragraphs(paragraph_length))
 
 @app.route('/dashboard/<name>')
 @app.route('/dashboard/', defaults={'name': None})
