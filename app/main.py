@@ -32,6 +32,7 @@ def index():
     return render_template('index.html', title='Welcome', username=name)
 
 @app.route('/dashboard/<name>')
+@app.route('/dashboard/', defaults={'name': None})
 def dashboard(name):
     list_users = []
     col = db["user"]
@@ -43,6 +44,21 @@ def dashboard(name):
             })
     return render_template('dashboard.html', username=name, list_users=list_users)
 
+@app.route('/profile/<uid>')
+def profile(uid):
+    col = db["user"]
+    user = col.find_one({ '_id': ObjectId(uid)})
+    if user:
+        user_data = {
+            'id': str(user['_id']),
+            'name': user['name'],
+            'status': user['status'],
+            "created": user['date_created'].strftime("%Y-%m-%d")
+        }
+        return render_template('profile.html', user_data=user_data)
+    else:
+        return render_template('profile.html', user_data=None)
+    
 @app.route('/login',methods = ['POST', 'GET'])
 def login():
    if request.method == 'POST':

@@ -1,0 +1,26 @@
+{% include 'header.html' %}            
+            <div class="row">
+                <div class="col-md-lg mt-5"> 
+                    <h2>Profile Data: <a class="btn btn-link" href="/dashboard">&laquo; Go back</a></h2>
+                    <table class="table table-bordered table-dark">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if user_data %}
+                            <tr scope="row">
+                            <td>{{user_data['id']}}</td>
+                            <td>{{user_data['name']}}</td>
+                            <td>{{user_data['created']}}</td>
+                        </tr>
+                        {% endif %}
+                        </tbody>
+                   </table>
+                </div>
+
+            </div>
+{% include 'footer.html' %}       

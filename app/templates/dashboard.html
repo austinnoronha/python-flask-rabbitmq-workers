@@ -1,8 +1,10 @@
 {% include 'header.html' %}            
             <div class="row">
+                {% if username  %}
                 <div class="col-md-lg mt-5"> 
                     <h1>Welcome! <u>{{ username }}</u></h1>
                 </div>
+                {% endif %}
                 
                 <div class="col-md-lg mt-5"> 
                     <h2>List of all user(s)</h2>
@@ -13,6 +15,7 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Created</th>
+                                <th scope="col">Profile</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -23,6 +26,7 @@
                             <td>{{result.id}}</td>
                             <td>{{result.name}}</td>
                             <td>{{result.created}}</td>
+                            <td><a class="btn btn-info btn-md" href="/profile/{{result.id}}">View profile &raquo;</a></td>
                         </tr>
                         {% set counter.value = counter.value + 1 %}
                         {% endfor %}
